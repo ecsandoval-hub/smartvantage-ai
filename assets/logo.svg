@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#FDE68A"/>
+      <stop offset="30%"  stop-color="#F5C842"/>
+      <stop offset="60%"  stop-color="#D4900A"/>
+      <stop offset="100%" stop-color="#A16207"/>
+    </linearGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#FDE68A"/>
+      <stop offset="50%"  stop-color="#D4900A"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ===== OUTER TRIANGLE ===== -->
+  <path
+    d="M200 22 L374 308 L26 308 Z"
+    stroke="url(#goldGrad)"
+    stroke-width="16"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    fill="none"
+    filter="url(#glow)"
+  />
+
+  <!-- ===== INNER INTERLOCKED G-DESIGN ===== -->
+  <!--
+    The inner design consists of two angular interlocked paths that
+    create the signature SmartVantage mark inside the triangle.
+
+    Each path traces a G-like angular sweep:
+    Left path  → counterclockwise G opening right
+    Right path → clockwise G opening left
+    They overlap in the center creating the linked/knot effect.
+  -->
+
+  <!-- Left G-path (opens right / sweeps counterclockwise) -->
+  <path
+    d="M200 82
+       L152 165
+       L118 228
+       L118 258
+       L148 258
+       L148 236
+       L130 236
+       L130 228
+       L165 165
+       L200 105"
+    stroke="url(#goldGrad)"
+    stroke-width="15"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Right G-path (opens left / sweeps clockwise) -->
+  <path
+    d="M200 82
+       L248 165
+       L282 228
+       L282 258
+       L252 258
+       L252 236
+       L270 236
+       L270 228
+       L235 165
+       L200 105"
+    stroke="url(#goldGrad)"
+    stroke-width="15"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Central connector — top inner triangle bar -->
+  <path
+    d="M165 165 L235 165"
+    stroke="url(#goldGrad)"
+    stroke-width="15"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Bottom connector bar -->
+  <path
+    d="M148 258 L252 258"
+    stroke="url(#goldGrad)"
+    stroke-width="15"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- ===== COMPANY NAME TEXT ===== -->
+  <text
+    x="200" y="372"
+    text-anchor="middle"
+    fill="url(#goldText)"
+    font-family="'Plus Jakarta Sans', 'Inter', Arial, sans-serif"
+    font-weight="700"
+    font-size="36"
+    letter-spacing="6"
+    filter="url(#glow)"
+  >SMARTVANTAGE</text>
+
+  <text
+    x="200" y="428"
+    text-anchor="middle"
+    fill="url(#goldText)"
+    font-family="'Plus Jakarta Sans', 'Inter', Arial, sans-serif"
+    font-weight="700"
+    font-size="36"
+    letter-spacing="12"
+    filter="url(#glow)"
+  >AI</text>
+</svg>

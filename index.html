@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartVantage AI — Intelligent Automation for the UAE</title>
+  <meta name="description" content="SRTIP-licensed AI consultancy delivering intelligent automation for Aviation, Construction, Real Estate, and Hospitality sectors in the UAE." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS Animation -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Tailwind Config -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            primary: {
+              50: '#e0f0ff',
+              100: '#c0e0ff',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            },
+            cyan: {
+              400: '#22d3ee',
+              500: '#06b6d4',
+            },
+            blue: {
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+            },
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            },
+            dark: {
+              950: '#020409',
+              900: '#050d1a',
+              800: '#080f1f',
+              700: '#0d1829',
+              600: '#1a2744',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- JetBrains Mono for tech aesthetic -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --blue: #0ea5e9;
+      --blue-glow: #38bdf8;
+      --cyan: #06b6d4;
+      --bg: #020409;
+      --bg2: #050d1a;
+      --bg3: #080f1f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* === GRID OVERLAY === */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === ANIMATED HERO === */
+    #hero-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(14,165,233,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(6,182,212,0.05) 0%, transparent 60%),
+        linear-gradient(180deg, #020409 0%, #050d1a 100%);
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.12;
+      animation: pulse-glow 5s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes pulse-glow {
+      from { transform: scale(0.9); opacity: 0.08; }
+      to { transform: scale(1.1); opacity: 0.18; }
+    }
+
+    /* SCAN LINE */
+    .scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(14,165,233,0.4), transparent);
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+    @keyframes scan {
+      0% { top: 0%; }
+      100% { top: 100%; }
+    }
+
+    /* === GLASS CARDS — BLUE BORDER === */
+    .glass-card {
+      background: rgba(8, 15, 31, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(14, 165, 233, 0.15);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .glass-card:hover {
+      background: rgba(14, 165, 233, 0.05);
+      border-color: rgba(14, 165, 233, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(14, 165, 233, 0.12), 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Corner decorations on hover */
+    .glass-card::before,
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: rgba(14, 165, 233, 0.5);
+      border-style: solid;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+    .glass-card::before {
+      top: -1px; left: -1px;
+      border-width: 2px 0 0 2px;
+      border-radius: 4px 0 0 0;
+    }
+    .glass-card::after {
+      bottom: -1px; right: -1px;
+      border-width: 0 2px 2px 0;
+      border-radius: 0 0 4px 0;
+    }
+    .glass-card:hover::before,
+    .glass-card:hover::after { opacity: 1; width: 16px; height: 16px; }
+
+    /* === GRADIENT TEXT — BLUE === */
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-gold {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* === BUTTONS === */
+    .btn-primary {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(14, 165, 233, 0.5), 0 10px 40px rgba(14, 165, 233, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #38bdf8;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid rgba(14, 165, 233, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-outline:hover {
+      background: rgba(14, 165, 233, 0.08);
+      border-color: #0ea5e9;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
+    }
+
+    /* === NAVIGATION === */
+    .nav-sticky {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: all 0.3s ease;
+    }
+    .nav-sticky.scrolled {
+      background: rgba(2, 4, 9, 0.95);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(14, 165, 233, 0.15);
+      padding: 12px 0;
+    }
+
+    .nav-link {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s;
+      position: relative;
+      letter-spacing: 0.3px;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: #0ea5e9;
+      transition: width 0.3s;
+      box-shadow: 0 0 8px #0ea5e9;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* === STATS === */
+    .stat-number {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    /* MONO LABEL */
+    .mono-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #0ea5e9;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* === PRICING CARDS === */
+    .pricing-card {
+      background: rgba(8, 15, 31, 0.8);
+      border: 1px solid rgba(14, 165, 233, 0.15);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card.featured {
+      background: rgba(14, 165, 233, 0.06);
+      border-color: rgba(14, 165, 233, 0.45);
+    }
+    .pricing-card.featured::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #0ea5e9, #22d3ee, #0ea5e9, transparent);
+    }
+    .pricing-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 40px rgba(14, 165, 233, 0.1), 0 24px 60px rgba(0,0,0,0.5);
+      border-color: rgba(14, 165, 233, 0.35);
+    }
+
+    /* === INDUSTRY CARDS === */
+    .industry-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      height: 280px;
+      cursor: pointer;
+      border: 1px solid rgba(14, 165, 233, 0.12);
+      transition: border-color 0.3s;
+    }
+    .industry-card:hover { border-color: rgba(14, 165, 233, 0.4); }
+
+    .industry-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      transition: transform 0.5s ease;
+    }
+    .industry-card:hover .industry-bg { transform: scale(1.05); }
+
+    .industry-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(2,4,9,0.97) 30%, rgba(2,4,9,0.4) 100%);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    /* === SECTION BADGES === */
+    .section-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14, 165, 233, 0.08);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      color: #38bdf8;
+      padding: 5px 14px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* === SERVICE TABS === */
+    .service-tab {
+      padding: 9px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 13px;
+      transition: all 0.3s;
+      border: 1px solid transparent;
+      color: #64748b;
+      background: transparent;
+    }
+    .service-tab.active,
+    .service-tab:hover {
+      background: rgba(14, 165, 233, 0.1);
+      border-color: rgba(14, 165, 233, 0.3);
+      color: #38bdf8;
+    }
+
+    /* === TIMELINE DOT === */
+    .timeline-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px rgba(14, 165, 233, 0.3), 0 0 0 4px rgba(14, 165, 233, 0.08);
+    }
+
+    /* === FORM === */
+    .form-input {
+      width: 100%;
+      background: rgba(8, 15, 31, 0.8);
+      border: 1px solid rgba(14, 165, 233, 0.2);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: #e2e8f0;
+      font-size: 14px;
+      transition: all 0.3s;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .form-input:focus {
+      border-color: rgba(14, 165, 233, 0.6);
+      background: rgba(14, 165, 233, 0.04);
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.08), 0 0 20px rgba(14, 165, 233, 0.1);
+    }
+    .form-input::placeholder { color: #334155; }
+
+    /* === SCROLLBAR === */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(14,165,233,0.3); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #0ea5e9; }
+
+    /* === MOBILE MENU === */
+    #mobile-menu {
+      display: none;
+      background: rgba(2, 4, 9, 0.98);
+      backdrop-filter: blur(24px);
+    }
+    #mobile-menu.open { display: block; }
+
+    /* === TOAST === */
+    .toast {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(56,189,248,0.4);
+      box-shadow: 0 0 30px rgba(14,165,233,0.3);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* === FLOATING === */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    .floating { animation: float 6s ease-in-out infinite; }
+    .floating-delay { animation: float 6s ease-in-out 2s infinite; }
+
+    /* === TOGGLE === */
+    .toggle-track {
+      width: 52px; height: 26px;
+      background: rgba(14,165,233,0.1);
+      border: 1px solid rgba(14,165,233,0.25);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-track.active { background: rgba(14,165,233,0.25); border-color: rgba(14,165,233,0.5); }
+    .toggle-thumb {
+      width: 20px; height: 20px;
+      background: #0ea5e9;
+      border-radius: 3px;
+      position: absolute;
+      top: 2px; left: 2px;
+      transition: transform 0.3s;
+      box-shadow: 0 0 8px rgba(14,165,233,0.5);
+    }
+    .toggle-track.active .toggle-thumb { transform: translateX(26px); }
+
+    /* === DATA TABLE GLOW === */
+    table tr:hover td { background: rgba(14,165,233,0.04); }
+
+    /* === NEON DIVIDER === */
+    .neon-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(14,165,233,0.5), transparent);
+      margin: 0;
+    }
+
+    /* === TECH PATTERN BG === */
+    .tech-bg {
+      background-image: radial-gradient(circle at 2px 2px, rgba(14,165,233,0.08) 1px, transparent 0);
+      background-size: 32px 32px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="nav-sticky" id="navbar">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg,#D4900A,#92400e);">
+        <span class="text-white font-bold text-sm tracking-tight" style="font-family:'Plus Jakarta Sans',sans-serif;">SV</span>
+      </div>
+      <div>
+        <div class="font-heading font-bold text-white text-lg leading-tight">SmartVantage</div>
+        <div class="text-xs font-semibold tracking-wider" style="color:#D4900A">AI</div>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#industries" class="nav-link">Industries</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#roadmap" class="nav-link">Roadmap</a>
+      <a href="#founder" class="nav-link">Founder</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <!-- CTA -->
+    <div class="hidden md:flex items-center gap-3">
+      <a href="#contact" class="btn-primary text-sm" style="padding: 10px 22px;">
+        <i class="fa-solid fa-calendar-check"></i> Free Consultation
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMobile()">
+      <span class="w-6 h-0.5 bg-white rounded transition-all"></span>
+      <span class="w-6 h-0.5 bg-white rounded transition-all"></span>
+      <span class="w-6 h-0.5 bg-white rounded transition-all"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden absolute top-full left-0 right-0 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
+      <a href="#about" class="nav-link text-lg" onclick="closeMobile()">About</a>
+      <a href="#services" class="nav-link text-lg" onclick="closeMobile()">Services</a>
+      <a href="#industries" class="nav-link text-lg" onclick="closeMobile()">Industries</a>
+      <a href="#pricing" class="nav-link text-lg" onclick="closeMobile()">Pricing</a>
+      <a href="#roadmap" class="nav-link text-lg" onclick="closeMobile()">Roadmap</a>
+      <a href="#founder" class="nav-link text-lg" onclick="closeMobile()">Founder</a>
+      <a href="#contact" class="nav-link text-lg" onclick="closeMobile()">Contact</a>
+      <a href="#contact" class="btn-primary justify-center mt-2" onclick="closeMobile()">
+        <i class="fa-solid fa-calendar-check"></i> Free Consultation
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="hero-section" id="home">
+  <!-- Animated background glows -->
+  <div class="hero-glow" style="top:-100px; left:-100px; background:#6366f1;"></div>
+  <div class="hero-glow" style="bottom:-100px; right:-100px; background:#a78bfa; animation-delay:2s;"></div>
+  <div class="hero-glow" style="top:40%; left:40%; background:#f59e0b; width:300px; height:300px; animation-delay:1s;"></div>
+
+  <!-- Particle Canvas -->
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10 py-32">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left Content -->
+      <div>
+        <div class="section-badge mb-6">
+          <i class="fa-solid fa-circle-check text-green-400"></i>
+          SRTIP Licensed &amp; Compliant
+        </div>
+        <h1 class="font-heading text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-6">
+          Powering the
+          <span class="gradient-text block">UAE's AI</span>
+          Revolution
+        </h1>
+        <p class="text-slate-400 text-lg lg:text-xl leading-relaxed mb-10 max-w-lg">
+          Industry-specific AI automation for Aviation, Construction, Real Estate &amp; Hospitality. SRTIP-compliant solutions delivering measurable ROI from day one.
+        </p>
+        <div class="flex flex-wrap gap-4 mb-12">
+          <a href="#contact" class="btn-primary">
+            <i class="fa-solid fa-rocket"></i> Start Your AI Journey
+          </a>
+          <a href="#services" class="btn-outline">
+            <i class="fa-solid fa-play"></i> Explore Services
+          </a>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex flex-wrap gap-6">
+          <div class="flex items-center gap-2 text-sm text-slate-400">
+            <i class="fa-solid fa-shield-halved text-green-400"></i>
+            <span>UAE Compliant</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-400">
+            <i class="fa-solid fa-award text-gold-400"></i>
+            <span>SRTIP Approved</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-400">
+            <i class="fa-solid fa-headset text-primary-500"></i>
+            <span>24/7 Support</span>
+          </div>
+          <div class="flex items-center gap-2 text-sm text-slate-400">
+            <i class="fa-solid fa-star text-gold-400"></i>
+            <span>Free Discovery Call</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Animated Dashboard Card -->
+      <div class="hidden lg:block relative">
+        <div class="floating glass-card p-8 max-w-md ml-auto">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <p class="text-sm text-slate-400">UAE AI Market</p>
+              <p class="text-2xl font-bold text-white">$9.6B by 2030</p>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center">
+              <i class="fa-solid fa-chart-line text-primary-500 text-xl"></i>
+            </div>
+          </div>
+          <!-- Mini Chart -->
+          <canvas id="heroChart" height="120"></canvas>
+          <div class="mt-4 grid grid-cols-3 gap-3">
+            <div class="text-center p-3 bg-white/5 rounded-xl">
+              <div class="text-green-400 font-bold text-lg">33.5%</div>
+              <div class="text-xs text-slate-500 mt-1">CAGR Growth</div>
+            </div>
+            <div class="text-center p-3 bg-white/5 rounded-xl">
+              <div class="text-primary-400 font-bold text-lg">14%</div>
+              <div class="text-xs text-slate-500 mt-1">GDP Contribution</div>
+            </div>
+            <div class="text-center p-3 bg-white/5 rounded-xl">
+              <div class="text-gold-400 font-bold text-lg">40%</div>
+              <div class="text-xs text-slate-500 mt-1">Deploy Faster</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Badge -->
+        <div class="floating-delay absolute -bottom-8 -left-8 glass-card p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+            <i class="fa-solid fa-check text-green-400"></i>
+          </div>
+          <div>
+            <div class="text-white font-semibold text-sm">SRTIP Certified</div>
+            <div class="text-slate-400 text-xs">Sharjah, UAE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass-card p-6 text-center" data-aos="fade-up" data-aos-delay="0">
+        <div class="stat-number gradient-text" data-count="33.5" data-suffix="%">0%</div>
+        <p class="text-slate-400 text-sm mt-2">Annual AI Market CAGR</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-number gradient-text" data-count="9.6" data-prefix="$" data-suffix="B">$0B</div>
+        <p class="text-slate-400 text-sm mt-2">UAE AI Market by 2030</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-number gradient-text" data-count="40" data-suffix="%">0%</div>
+        <p class="text-slate-400 text-sm mt-2">Faster Deployment</p>
+      </div>
+      <div class="glass-card p-6 text-center" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-number gradient-text" data-count="30" data-suffix="%">0%</div>
+        <p class="text-slate-400 text-sm mt-2">Maintenance Cost Reduction</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT / MISSION ===== -->
+<section id="about" class="py-28 bg-dark-800 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,<svg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;><g fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;><g fill=&quot;%236366f1&quot; fill-opacity=&quot;1&quot;><circle cx=&quot;2&quot; cy=&quot;2&quot; r=&quot;2&quot;/></g></g></svg>'); background-size: 30px 30px;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Left -->
+      <div data-aos="fade-right">
+        <div class="section-badge">
+          <i class="fa-solid fa-bullseye"></i> Our Mission
+        </div>
+        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mb-6">
+          Bridging AI Excellence<br />
+          <span class="gradient-text">with UAE Industry</span>
+        </h2>
+        <p class="text-slate-400 text-lg leading-relaxed mb-6">
+          SmartVantage AI empowers the UAE's key sectors with compliant, high-impact AI automation solutions that drive operational excellence and cost efficiency—while staying fully aligned with local regulations.
+        </p>
+        <p class="text-slate-400 leading-relaxed mb-8">
+          Licensed under the Sharjah Research Technology and Innovation Park (SRTIP), we operate a unique dual-shore model combining UAE-based client management with a high-skill development hub to deliver Tier-1 quality at competitive rates.
+        </p>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-check text-primary-400"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-semibold">SRTIP Licensed &amp; Compliant</h4>
+              <p class="text-slate-400 text-sm mt-1">Fully regulated under Sharjah Research Technology and Innovation Park</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-gold-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-layer-group text-gold-400"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-semibold">Industry-Specific IP</h4>
+              <p class="text-slate-400 text-sm mt-1">Pre-built automation modules reducing deployment time by 40%</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-green-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-globe text-green-400"></i>
+            </div>
+            <div>
+              <h4 class="text-white font-semibold">Dual-Shore Operations</h4>
+              <p class="text-slate-400 text-sm mt-1">UAE client management + Philippines development hub for maximum value</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Cards Grid -->
+      <div class="grid grid-cols-2 gap-4" data-aos="fade-left">
+        <div class="glass-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-primary-500/15 flex items-center justify-center mb-4">
+            <i class="fa-solid fa-brain text-primary-400 text-xl"></i>
+          </div>
+          <h4 class="text-white font-semibold mb-2">AI Development</h4>
+          <p class="text-slate-400 text-sm">Custom AI solutions built for your specific business context</p>
+        </div>
+        <div class="glass-card p-6 mt-8">
+          <div class="w-12 h-12 rounded-xl bg-gold-500/15 flex items-center justify-center mb-4">
+            <i class="fa-solid fa-graduation-cap text-gold-400 text-xl"></i>
+          </div>
+          <h4 class="text-white font-semibold mb-2">AI Training</h4>
+          <p class="text-slate-400 text-sm">Equip your team with cutting-edge AI skills and knowledge</p>
+        </div>
+        <div class="glass-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-green-500/15 flex items-center justify-center mb-4">
+            <i class="fa-solid fa-arrows-spin text-green-400 text-xl"></i>
+          </div>
+          <h4 class="text-white font-semibold mb-2">System Integration</h4>
+          <p class="text-slate-400 text-sm">Seamlessly connect AI with your existing software stack</p>
+        </div>
+        <div class="glass-card p-6 mt-8">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/15 flex items-center justify-center mb-4">
+            <i class="fa-solid fa-store text-purple-400 text-xl"></i>
+          </div>
+          <h4 class="text-white font-semibold mb-2">E-Trading</h4>
+          <p class="text-slate-400 text-sm">Digital commerce solutions powered by intelligent automation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES SECTION ===== -->
+<section id="services" class="py-28 bg-dark-900">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-gears"></i> What We Offer
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+        Comprehensive AI <span class="gradient-text">Services</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        From strategy to deployment, we cover every stage of your AI transformation journey with precision and expertise.
+      </p>
+    </div>
+
+    <!-- Service Category Tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <button class="service-tab active" onclick="showService('consulting')">AI Consulting</button>
+      <button class="service-tab" onclick="showService('development')">Development</button>
+      <button class="service-tab" onclick="showService('training')">Training</button>
+      <button class="service-tab" onclick="showService('managed')">Managed Services</button>
+      <button class="service-tab" onclick="showService('integration')">Integration</button>
+    </div>
+
+    <!-- Service Panels -->
+    <div id="service-consulting" class="service-panel">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-phone-volume"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Free Discovery Call</h3>
+          <p class="text-slate-400 text-sm mb-4">30-minute consultation to explore your AI opportunities</p>
+          <div class="text-green-400 font-bold text-xl">FREE</div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-primary-400 text-3xl mb-4"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Readiness Assessment</h3>
+          <p class="text-slate-400 text-sm mb-4">2-4 hour comprehensive evaluation of your AI readiness</p>
+          <div class="text-white font-bold text-xl">AED 4,000 <span class="text-slate-500 text-sm font-normal">/ $1,090</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-purple-400 text-3xl mb-4"><i class="fa-solid fa-lightbulb"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Strategy Workshop</h3>
+          <p class="text-slate-400 text-sm mb-4">Full-day strategic workshop to define your AI roadmap</p>
+          <div class="text-white font-bold text-xl">AED 9,500 <span class="text-slate-500 text-sm font-normal">/ $2,590</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="text-green-400 text-3xl mb-4"><i class="fa-solid fa-map"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Roadmap Development</h3>
+          <p class="text-slate-400 text-sm mb-4">Industry-specific planning with detailed implementation steps</p>
+          <div class="text-white font-bold text-xl">AED 17,500 <span class="text-slate-500 text-sm font-normal">/ $4,765</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="text-blue-400 text-3xl mb-4"><i class="fa-solid fa-user-tie"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Senior AI Consultant</h3>
+          <p class="text-slate-400 text-sm mb-4">Expert-level consulting for complex AI implementations</p>
+          <div class="text-white font-bold text-xl">AED 650 <span class="text-slate-500 text-sm font-normal">/ hr</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-handshake"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Monthly Retainer</h3>
+          <p class="text-slate-400 text-sm mb-4">10 dedicated hours per month with dedicated AI partner</p>
+          <div class="text-white font-bold text-xl">AED 5,500 <span class="text-slate-500 text-sm font-normal">/ mo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="service-development" class="service-panel hidden">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="0">
+          <div class="text-primary-400 text-3xl mb-4"><i class="fa-solid fa-comments"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Basic FAQ Chatbot</h3>
+          <p class="text-slate-400 text-sm mb-4">Website-integrated chatbot for customer queries</p>
+          <div class="text-white font-bold text-xl">AED 10,000 <span class="text-slate-500 text-sm font-normal">/ $2,725</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-robot"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Advanced AI Chatbot</h3>
+          <p class="text-slate-400 text-sm mb-4">Multi-channel with NLP &amp; sentiment analysis</p>
+          <div class="text-white font-bold text-xl">AED 22,000 <span class="text-slate-500 text-sm font-normal">/ $5,990</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-green-400 text-3xl mb-4"><i class="fa-solid fa-phone"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Call Agent</h3>
+          <p class="text-slate-400 text-sm mb-4">Intelligent call handling with voice AI</p>
+          <div class="text-white font-bold text-xl">AED 32,000 + <span class="text-slate-500 text-sm font-normal">4,200/mo</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="text-purple-400 text-3xl mb-4"><i class="fa-solid fa-diagram-project"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Workflow Automation</h3>
+          <p class="text-slate-400 text-sm mb-4">Multi-step intelligent process automation</p>
+          <div class="text-white font-bold text-xl">AED 14,000 <span class="text-slate-500 text-sm font-normal">/ $3,815</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="text-blue-400 text-3xl mb-4"><i class="fa-solid fa-chart-bar"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Predictive Analytics</h3>
+          <p class="text-slate-400 text-sm mb-4">Real-time insights with AI-powered dashboards</p>
+          <div class="text-white font-bold text-xl">AED 40,000 <span class="text-slate-500 text-sm font-normal">/ $10,900</span></div>
+        </div>
+        <div class="glass-card p-6 featured" data-aos="fade-up" data-aos-delay="500">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-network-wired"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Agentic AI System <span class="text-xs bg-gold-500/20 text-gold-400 px-2 py-0.5 rounded-full ml-1">New</span></h3>
+          <p class="text-slate-400 text-sm mb-4">Autonomous multi-agent AI orchestration platform</p>
+          <div class="text-white font-bold text-xl">AED 52,000+ <span class="text-slate-500 text-sm font-normal">/ $14,160+</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="service-training" class="service-panel hidden">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-card p-6" data-aos="fade-up">
+          <div class="text-primary-400 text-3xl mb-4"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Fundamentals Workshop</h3>
+          <p class="text-slate-400 text-sm mb-4">1 day, up to 15 participants – covers AI basics</p>
+          <div class="text-white font-bold text-xl">AED 7,500 <span class="text-slate-500 text-sm font-normal">/ $2,045</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-user-gear"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI for Business Leaders</h3>
+          <p class="text-slate-400 text-sm mb-4">Half-day executive session for decision makers</p>
+          <div class="text-white font-bold text-xl">AED 4,800 <span class="text-slate-500 text-sm font-normal">/ $1,310</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-green-400 text-3xl mb-4"><i class="fa-solid fa-laptop-code"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Hands-On AI Tools Training</h3>
+          <p class="text-slate-400 text-sm mb-4">2-day practical workshop with real implementations</p>
+          <div class="text-white font-bold text-xl">AED 14,000 <span class="text-slate-500 text-sm font-normal">/ $3,815</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="text-purple-400 text-3xl mb-4"><i class="fa-solid fa-building"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Industry-Specific Training</h3>
+          <p class="text-slate-400 text-sm mb-4">3-day customized program for your sector</p>
+          <div class="text-white font-bold text-xl">AED 21,000 <span class="text-slate-500 text-sm font-normal">/ $5,720</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="text-blue-400 text-3xl mb-4"><i class="fa-solid fa-certificate"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Practitioner Certification</h3>
+          <p class="text-slate-400 text-sm mb-4">4-week instructor-led certification program</p>
+          <div class="text-white font-bold text-xl">AED 9,800 <span class="text-slate-500 text-sm font-normal">/ $2,670</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-trophy"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">AI Specialist Certification</h3>
+          <p class="text-slate-400 text-sm mb-4">8-week advanced program for deep expertise</p>
+          <div class="text-white font-bold text-xl">AED 17,500 <span class="text-slate-500 text-sm font-normal">/ $4,765</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="service-managed" class="service-panel hidden">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="glass-card p-6" data-aos="fade-up">
+          <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-4">Starter</div>
+          <h3 class="text-white font-bold text-xl mb-1">Basic</h3>
+          <div class="text-2xl font-bold text-white mb-4">AED 2,200<span class="text-slate-400 text-sm font-normal">/mo</span></div>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Basic chatbot</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>1,000 interactions/mo</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Email support</li>
+          </ul>
+        </div>
+        <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-primary-400 text-xs font-semibold uppercase tracking-wider mb-4">Most Popular</div>
+          <h3 class="text-white font-bold text-xl mb-1">Professional</h3>
+          <div class="text-2xl font-bold text-white mb-4">AED 4,500<span class="text-slate-400 text-sm font-normal">/mo</span></div>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Advanced automation</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>5,000 interactions/mo</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Priority support</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Performance reports</li>
+          </ul>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-4">Enterprise</div>
+          <h3 class="text-white font-bold text-xl mb-1">Enterprise</h3>
+          <div class="text-2xl font-bold text-white mb-4">AED 11,000<span class="text-slate-400 text-sm font-normal">/mo</span></div>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Full AI management</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Unlimited interactions</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>24/7 premium support</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Dedicated manager</li>
+          </ul>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="text-purple-400 text-xs font-semibold uppercase tracking-wider mb-4">Specialized</div>
+          <h3 class="text-white font-bold text-xl mb-1">AI Receptionist</h3>
+          <div class="text-2xl font-bold text-white mb-4">AED 2,750<span class="text-slate-400 text-sm font-normal">/mo</span></div>
+          <ul class="space-y-2 text-sm text-slate-400">
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>24/7 virtual receptionist</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Appointment booking</li>
+            <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Multi-language support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="service-integration" class="service-panel hidden">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="glass-card p-6" data-aos="fade-up">
+          <div class="text-primary-400 text-3xl mb-4"><i class="fa-solid fa-plug"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Single Platform Integration</h3>
+          <p class="text-slate-400 text-sm mb-4">CRM, ERP, or similar system integration</p>
+          <div class="text-white font-bold text-xl">AED 9,500 <span class="text-slate-500 text-sm font-normal">/ $2,590</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-sitemap"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Multi-Platform Integration</h3>
+          <p class="text-slate-400 text-sm mb-4">Connect 3-5 business systems seamlessly</p>
+          <div class="text-white font-bold text-xl">AED 25,000 <span class="text-slate-500 text-sm font-normal">/ $6,810</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="text-green-400 text-3xl mb-4"><i class="fa-solid fa-code"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">API Development</h3>
+          <p class="text-slate-400 text-sm mb-4">Custom API solutions for your ecosystem</p>
+          <div class="text-white font-bold text-xl">AED 17,500 <span class="text-slate-500 text-sm font-normal">/ $4,765</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="text-purple-400 text-3xl mb-4"><i class="fa-solid fa-database"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Data Migration</h3>
+          <p class="text-slate-400 text-sm mb-4">Complete data transfer with quality assurance</p>
+          <div class="text-white font-bold text-xl">AED 28,000 <span class="text-slate-500 text-sm font-normal">/ $7,630</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="text-blue-400 text-3xl mb-4"><i class="fa-solid fa-rocket"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Enterprise Deployment</h3>
+          <p class="text-slate-400 text-sm mb-4">Complex 3+ month enterprise implementation</p>
+          <div class="text-white font-bold text-xl">From AED 85,000 <span class="text-slate-500 text-sm font-normal">/ $23,160</span></div>
+        </div>
+        <div class="glass-card p-6" data-aos="fade-up" data-aos-delay="500">
+          <div class="text-gold-400 text-3xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3 class="text-white font-bold text-lg mb-2">Advanced Security</h3>
+          <p class="text-slate-400 text-sm mb-4">Enhanced AI security with UAE PDPL compliance</p>
+          <div class="text-white font-bold text-xl">AED 14,000 <span class="text-slate-500 text-sm font-normal">/ $3,815</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== INDUSTRY FOCUS ===== -->
+<section id="industries" class="py-28 bg-dark-800">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-industry"></i> Industry Focus
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+        Sector-Specific <span class="gradient-text">AI Solutions</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        Deep domain expertise in the UAE's fastest-growing industries with pre-built modules that accelerate deployment.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Aviation -->
+      <div class="industry-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="industry-bg" style="background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);"></div>
+        <div class="industry-overlay">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
+            <i class="fa-solid fa-plane text-blue-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Aviation</h3>
+          <p class="text-slate-400 text-sm mb-3">Predictive maintenance, crew scheduling AI, passenger experience automation</p>
+          <div class="text-blue-400 text-xs font-semibold">30% maintenance cost reduction</div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="text-xs bg-blue-500/15 text-blue-400 px-2 py-1 rounded-full">GCAA Compliant</span>
+            <span class="text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-full">Fleet Ops</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Construction -->
+      <div class="industry-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="industry-bg" style="background: linear-gradient(135deg, #3f2200 0%, #0f172a 100%);"></div>
+        <div class="industry-overlay">
+          <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-3">
+            <i class="fa-solid fa-hard-hat text-orange-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Construction</h3>
+          <p class="text-slate-400 text-sm mb-3">AI-enhanced BIM, smart site safety, project lifecycle optimization</p>
+          <div class="text-orange-400 text-xs font-semibold">AI-driven generative design</div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="text-xs bg-orange-500/15 text-orange-400 px-2 py-1 rounded-full">Revit API</span>
+            <span class="text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-full">IoT Sensors</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Estate -->
+      <div class="industry-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="industry-bg" style="background: linear-gradient(135deg, #0d3b2e 0%, #0f172a 100%);"></div>
+        <div class="industry-overlay">
+          <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mb-3">
+            <i class="fa-solid fa-building text-green-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Real Estate</h3>
+          <p class="text-slate-400 text-sm mb-3">Virtual staging, predictive valuation, automated tenant management</p>
+          <div class="text-green-400 text-xs font-semibold">AI-driven market intelligence</div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="text-xs bg-green-500/15 text-green-400 px-2 py-1 rounded-full">Virtual Tours</span>
+            <span class="text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-full">PropTech</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Food & Beverage -->
+      <div class="industry-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="industry-bg" style="background: linear-gradient(135deg, #3b0d1a 0%, #0f172a 100%);"></div>
+        <div class="industry-overlay">
+          <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-3">
+            <i class="fa-solid fa-utensils text-red-400 text-xl"></i>
+          </div>
+          <h3 class="text-white font-bold text-lg mb-2">Food &amp; Beverage</h3>
+          <p class="text-slate-400 text-sm mb-3">Smart inventory, demand forecasting, automated ordering, HACCP compliance</p>
+          <div class="text-red-400 text-xs font-semibold">IoT kitchen integration</div>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <span class="text-xs bg-red-500/15 text-red-400 px-2 py-1 rounded-full">HACCP AI</span>
+            <span class="text-xs bg-white/10 text-slate-300 px-2 py-1 rounded-full">Smart Kitchen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Industry Solutions Pricing Table -->
+    <div class="mt-12 glass-card p-8" data-aos="fade-up">
+      <h3 class="text-white font-bold text-xl mb-6 text-center">Industry Solution Pricing (Updated 2026)</h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left text-slate-400 font-semibold pb-3">Industry</th>
+              <th class="text-left text-slate-400 font-semibold pb-3">Solution</th>
+              <th class="text-right text-slate-400 font-semibold pb-3">AED</th>
+              <th class="text-right text-slate-400 font-semibold pb-3">USD</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5">
+            <tr><td class="py-3 text-slate-300">Aviation</td><td class="py-3 text-slate-400">Flight Operations Optimization</td><td class="py-3 text-right text-white font-semibold">97,000</td><td class="py-3 text-right text-slate-400">$26,430</td></tr>
+            <tr><td class="py-3 text-slate-300">Aviation</td><td class="py-3 text-slate-400">Maintenance Prediction System</td><td class="py-3 text-right text-white font-semibold">109,000</td><td class="py-3 text-right text-slate-400">$29,700</td></tr>
+            <tr><td class="py-3 text-slate-300">Construction</td><td class="py-3 text-slate-400">Project Management Automation</td><td class="py-3 text-right text-white font-semibold">63,000</td><td class="py-3 text-right text-slate-400">$17,170</td></tr>
+            <tr><td class="py-3 text-slate-300">Construction</td><td class="py-3 text-slate-400">Safety Monitoring System</td><td class="py-3 text-right text-white font-semibold">71,000</td><td class="py-3 text-right text-slate-400">$19,350</td></tr>
+            <tr><td class="py-3 text-slate-300">Real Estate</td><td class="py-3 text-slate-400">Property Valuation AI</td><td class="py-3 text-right text-white font-semibold">43,500</td><td class="py-3 text-right text-slate-400">$11,855</td></tr>
+            <tr><td class="py-3 text-slate-300">Real Estate</td><td class="py-3 text-slate-400">Market Analysis Dashboard</td><td class="py-3 text-right text-white font-semibold">51,500</td><td class="py-3 text-right text-slate-400">$14,035</td></tr>
+            <tr><td class="py-3 text-slate-300">Food &amp; Beverage</td><td class="py-3 text-slate-400">Inventory Management AI</td><td class="py-3 text-right text-white font-semibold">40,000</td><td class="py-3 text-right text-slate-400">$10,900</td></tr>
+            <tr><td class="py-3 text-slate-300">Food &amp; Beverage</td><td class="py-3 text-slate-400">Demand Forecasting System</td><td class="py-3 text-right text-white font-semibold">48,000</td><td class="py-3 text-right text-slate-400">$13,080</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-slate-500 mt-4">* All prices exclude 5% UAE VAT. Updated January 2026 based on current market conditions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING SECTION ===== -->
+<section id="pricing" class="py-28 bg-dark-900">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-tag"></i> Pricing
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+        Transparent & <span class="gradient-text">Competitive</span> Pricing
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        Most competitive minimum pricing in the UAE market. Updated for 2026 market conditions.
+      </p>
+
+      <!-- Currency Toggle -->
+      <div class="flex items-center justify-center gap-4 mt-8">
+        <span id="currency-label-aed" class="text-white font-semibold">AED</span>
+        <div class="toggle-track" id="currency-toggle" onclick="toggleCurrency()">
+          <div class="toggle-thumb"></div>
+        </div>
+        <span id="currency-label-usd" class="text-slate-400 font-semibold">USD</span>
+      </div>
+    </div>
+
+    <!-- Complete Package Cards -->
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <!-- Small Business -->
+      <div class="pricing-card" data-aos="fade-up">
+        <div class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Small Business</div>
+        <h3 class="text-white font-bold text-2xl mb-1">Starter Package</h3>
+        <div class="mb-6">
+          <div class="text-4xl font-bold text-white" id="pkg-starter-aed">AED 25,000</div>
+          <div class="text-slate-400 text-sm mt-1" id="pkg-starter-usd">≈ $6,810</div>
+        </div>
+        <div class="text-slate-400 text-sm mb-6">Complete package for SMEs entering AI</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Consultation &amp; AI readiness assessment</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>1 AI automation tool</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Basic system integration</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>2 training sessions</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>3-month support package</li>
+        </ul>
+        <a href="#contact" class="btn-outline w-full justify-center">Get Started</a>
+      </div>
+
+      <!-- Mid-Market (Featured) -->
+      <div class="pricing-card featured" data-aos="fade-up" data-aos-delay="100">
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-primary-400 text-xs font-semibold uppercase tracking-wider">Most Popular</div>
+          <span class="bg-primary-500/20 text-primary-400 text-xs font-semibold px-3 py-1 rounded-full">Best Value</span>
+        </div>
+        <h3 class="text-white font-bold text-2xl mb-1">Mid-Market Package</h3>
+        <div class="mb-6">
+          <div class="text-4xl font-bold gradient-text" id="pkg-midmarket-aed">AED 75,000</div>
+          <div class="text-slate-400 text-sm mt-1" id="pkg-midmarket-usd">≈ $20,435</div>
+        </div>
+        <div class="text-slate-400 text-sm mb-6">Full AI transformation for growing businesses</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Full AI strategy development</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>2-3 AI solutions implemented</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Full system integration</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Team-wide AI training</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>6-month premium support</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Quarterly strategy reviews</li>
+        </ul>
+        <a href="#contact" class="btn-primary w-full justify-center">Get Started</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-gold-400 text-xs font-semibold uppercase tracking-wider mb-2">Enterprise</div>
+        <h3 class="text-white font-bold text-2xl mb-1">Enterprise Package</h3>
+        <div class="mb-6">
+          <div class="text-4xl font-bold text-white" id="pkg-enterprise-aed">From AED 200,000</div>
+          <div class="text-slate-400 text-sm mt-1" id="pkg-enterprise-usd">From $54,495</div>
+        </div>
+        <div class="text-slate-400 text-sm mb-6">Full-scale enterprise AI transformation</div>
+        <ul class="space-y-3 text-sm mb-8">
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Complete AI roadmap</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Multiple AI solutions</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Enterprise-grade integration</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>12-month premium support</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Dedicated AI team</li>
+          <li class="flex gap-3 text-slate-300"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Custom SLA agreements</li>
+        </ul>
+        <a href="#contact" class="btn-outline w-full justify-center">Contact Sales</a>
+      </div>
+    </div>
+
+    <!-- Discounts -->
+    <div class="glass-card p-8" data-aos="fade-up">
+      <h3 class="text-white font-bold text-xl mb-6 text-center">Discounts &amp; Payment Terms</h3>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text-gold mb-2">15%</div>
+          <div class="text-white font-semibold text-sm">Annual Prepayment</div>
+          <div class="text-slate-400 text-xs mt-1">Monthly services paid yearly</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text-gold mb-2">20%</div>
+          <div class="text-white font-semibold text-sm">Multi-Service Bundle</div>
+          <div class="text-slate-400 text-xs mt-1">Multiple services combined</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text-gold mb-2">20%</div>
+          <div class="text-white font-semibold text-sm">Non-Profit Organizations</div>
+          <div class="text-slate-400 text-xs mt-1">Registered non-profits</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold gradient-text-gold mb-2">15%</div>
+          <div class="text-white font-semibold text-sm">Startup Discount</div>
+          <div class="text-slate-400 text-xs mt-1">Companies under 2 years old</div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 text-center mt-6">All prices exclude 5% UAE VAT · Development projects: 50% upfront, 30% at milestone, 20% on completion</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARKET OPPORTUNITY ===== -->
+<section class="py-28 bg-dark-800">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div data-aos="fade-right">
+        <div class="section-badge">
+          <i class="fa-solid fa-chart-pie"></i> Market Opportunity
+        </div>
+        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+          The UAE AI Market is<br />
+          <span class="gradient-text">Exploding</span>
+        </h2>
+        <p class="text-slate-400 text-lg mb-8">
+          With AI projected to contribute 14% to UAE GDP by 2030 and a market value of $9.6 billion, the opportunity has never been greater for businesses that act now.
+        </p>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-primary-500"></div>
+            <span class="text-slate-300">UAE AI Strategy 2031 backed by government investment</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-gold-400"></div>
+            <span class="text-slate-300">D33 Dubai Economic Agenda drives AI adoption</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-green-400"></div>
+            <span class="text-slate-300">26.2% CAGR global AI consulting market through 2035</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-purple-400"></div>
+            <span class="text-slate-300">ROI measurable within 6-18 months of implementation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="glass-card p-8" data-aos="fade-left">
+        <h3 class="text-white font-bold text-lg mb-6">UAE AI Market Growth Projection</h3>
+        <canvas id="marketChart" height="280"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ROADMAP ===== -->
+<section id="roadmap" class="py-28 bg-dark-900">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-route"></i> Implementation Roadmap
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+        Strategic <span class="gradient-text">Rollout Timeline</span>
+      </h2>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+        A 36-month phased expansion strategy from foundation to regional dominance.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Phase 1 -->
+      <div class="glass-card p-8" data-aos="fade-up">
+        <div class="timeline-dot mb-6">1</div>
+        <div class="text-primary-400 text-sm font-semibold uppercase tracking-wider mb-2">Months 1-6</div>
+        <h3 class="text-white font-bold text-xl mb-4">Foundation</h3>
+        <ul class="space-y-3 text-slate-400 text-sm">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Finalize SRTIP licensing &amp; corporate banking</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Recruit Lead AI Engineer &amp; Business Development Manager</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Secure 3-5 pilot projects in Real Estate &amp; Hospitality</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Launch digital presence &amp; content marketing</li>
+        </ul>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="100" style="border-color: rgba(99,102,241,0.3);">
+        <div class="timeline-dot mb-6">2</div>
+        <div class="text-primary-400 text-sm font-semibold uppercase tracking-wider mb-2">Months 7-18</div>
+        <h3 class="text-white font-bold text-xl mb-4">Expansion</h3>
+        <ul class="space-y-3 text-slate-400 text-sm">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Establish Philippines offshore development hub</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Launch Aviation &amp; Construction automation modules</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Execute Tier-1 UAE enterprise digital campaigns</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>ERP/SAP/Oracle vendor partnerships</li>
+        </ul>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="timeline-dot mb-6" style="background: linear-gradient(135deg, #f59e0b, #d97706);">3</div>
+        <div class="text-gold-400 text-sm font-semibold uppercase tracking-wider mb-2">Months 19-36</div>
+        <h3 class="text-white font-bold text-xl mb-4">Scale</h3>
+        <ul class="space-y-3 text-slate-400 text-sm">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Expand to Abu Dhabi &amp; Saudi Arabia</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Package custom solutions as licensable SaaS</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Strategic government &amp; private sector alliances</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-green-400 mt-0.5"></i>Regional AI market leadership</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOUNDER SECTION ===== -->
+<section id="founder" class="py-28 bg-dark-800 relative overflow-hidden">
+  <!-- Ambient glow -->
+  <div class="absolute top-0 right-0 w-96 h-96 rounded-full opacity-5 pointer-events-none" style="background:radial-gradient(circle, #D4900A, transparent); filter:blur(80px);"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 rounded-full opacity-5 pointer-events-none" style="background:radial-gradient(circle, #0ea5e9, transparent); filter:blur(80px);"></div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-user-astronaut"></i> Leadership
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-4">
+        Meet the <span class="gradient-text">Founder</span>
+      </h2>
+      <p class="text-slate-400 text-lg">The visionary behind SmartVantage AI</p>
+    </div>
+
+    <!-- Hero card -->
+    <div class="glass-card p-0 overflow-hidden max-w-5xl mx-auto" data-aos="fade-up">
+      <div class="flex flex-col lg:flex-row">
+
+        <!-- LEFT: Full-body photo -->
+        <div class="lg:w-72 flex-shrink-0 relative" style="background: linear-gradient(180deg, rgba(212,144,10,0.06) 0%, rgba(14,165,233,0.04) 100%);">
+          <!-- Gold top bar -->
+          <div class="h-1 w-full" style="background: linear-gradient(90deg, #D4900A, #F5D078, #D4900A);"></div>
+
+          <!-- Full-body photo — natural aspect ratio, whole body visible -->
+          <div class="relative w-full">
+            <img
+              id="founder-photo"
+              src="assets/founder_photo.png"
+              alt="Emmanuel Sandoval — Founder, SmartVantage AI"
+              style="width:100%; height:auto; display:block;"
+              onerror="document.getElementById('founder-photo-fallback').style.display='flex'; this.style.display='none';"
+            />
+            <!-- Fallback monogram if no photo -->
+            <div id="founder-photo-fallback" class="w-full items-center justify-center flex-col gap-3 hidden" style="display:none; min-height:400px;">
+              <div class="w-28 h-28 rounded-2xl flex items-center justify-center text-4xl font-bold text-white shadow-2xl" style="background:linear-gradient(135deg,#D4900A,#92400e);">ES</div>
+            </div>
+
+            <!-- Bottom gradient overlay for text blend -->
+            <div class="absolute bottom-0 left-0 right-0 h-28 pointer-events-none" style="background: linear-gradient(to top, rgba(8,15,31,0.95), transparent);"></div>
+
+            <!-- Name overlay at bottom -->
+            <div class="absolute bottom-0 left-0 right-0 p-5 text-center">
+              <h3 class="font-heading text-xl font-bold text-white leading-tight">Emmanuel Sandoval</h3>
+              <p class="text-xs font-semibold mt-1" style="color:#D4900A">Founder &amp; CEO</p>
+            </div>
+
+            <!-- Verified badge -->
+            <div class="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(212,144,10,0.2); border:1px solid rgba(212,144,10,0.4); color:#F5D078;">
+              <i class="fa-solid fa-check-circle text-xs"></i> Verified Founder
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Bio, Pillars, Quote -->
+        <div class="flex-1 p-8 lg:p-10">
+          <!-- Bio -->
+          <div class="mb-8">
+            <div class="mono-label mb-3">About the Founder</div>
+            <p class="text-slate-300 leading-relaxed text-[15px]">
+              With over <strong class="text-white">20 years of elite civil engineering and construction management experience</strong>—spanning landmark airport projects across the <strong class="text-white">UAE, Qatar, and the Philippines</strong>—Emmanuel Sandoval founded SmartVantage AI to bridge the gap between traditional infrastructure sectors and the transformative power of artificial intelligence.
+            </p>
+            <p class="text-slate-400 leading-relaxed text-[15px] mt-3">
+              His AI-powered solutions have driven 40% cost reductions and 65% efficiency gains across Aviation, Construction, Real Estate, and F&amp;B sectors—redefining what's possible when deep domain expertise meets cutting-edge technology.
+            </p>
+          </div>
+
+          <!-- Skills / Expertise -->
+          <div class="mb-8">
+            <div class="mono-label mb-3">Core Expertise</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="glass-card px-3 py-1.5 text-xs font-medium" style="color:#38bdf8;border-color:rgba(14,165,233,0.25)"><i class="fa-solid fa-plane mr-1"></i>Airfield Engineering</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium" style="color:#D4900A;border-color:rgba(212,144,10,0.25)"><i class="fa-solid fa-robot mr-1"></i>AI Automation</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium text-slate-300">Construction Management</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium text-slate-300"><i class="fa-brands fa-python mr-1" style="color:#38bdf8"></i>Python &amp; Coding</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium text-slate-300">Predictive Maintenance</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium text-slate-300">n8n &amp; Zapier</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium" style="color:#38bdf8;border-color:rgba(14,165,233,0.25)">Azure AI Foundry</span>
+              <span class="glass-card px-3 py-1.5 text-xs font-medium text-slate-300">MS in Construction Mgmt</span>
+            </div>
+          </div>
+
+          <!-- Three pillars -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="glass-card p-4 text-center">
+              <div class="text-2xl mb-2">✈️</div>
+              <div class="text-white font-semibold text-sm mb-1">Aviation Infrastructure</div>
+              <div class="text-slate-500 text-xs">8+ years at Abu Dhabi International Airport</div>
+            </div>
+            <div class="glass-card p-4 text-center">
+              <div class="text-2xl mb-2">🤖</div>
+              <div class="text-white font-semibold text-sm mb-1">AI-Powered Solutions</div>
+              <div class="text-slate-500 text-xs">Predictive maintenance & workflow automation</div>
+            </div>
+            <div class="glass-card p-4 text-center">
+              <div class="text-2xl mb-2">📐</div>
+              <div class="text-white font-semibold text-sm mb-1">Engineering Excellence</div>
+              <div class="text-slate-500 text-xs">Licensed Civil Engineer · MSc Construction Mgmt</div>
+            </div>
+          </div>
+
+          <!-- Signature quote -->
+          <div class="relative pl-5" style="border-left: 2px solid rgba(212,144,10,0.5);">
+            <i class="fa-solid fa-quote-left text-2xl absolute -top-1 -left-1 opacity-20" style="color:#D4900A"></i>
+            <p class="text-slate-300 italic leading-relaxed text-[15px]">
+              My career has been built on delivering precision at scale—from the foundations of international airports to the frontier of AI. SmartVantage AI exists to give every industry access to that same level of intelligent, performance-driven thinking.
+            </p>
+            <footer class="mt-3 text-sm font-semibold" style="color:#D4900A">— Emmanuel Sandoval, Founder · SmartVantage AI</footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY CHOOSE US ===== -->
+<section class="py-28 bg-dark-900">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="section-badge mx-auto">
+        <i class="fa-solid fa-star"></i> Why SmartVantage AI
+      </div>
+      <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+        The <span class="gradient-text">SmartVantage</span> Difference
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="glass-card p-8 text-center" data-aos="fade-up">
+        <div class="w-16 h-16 rounded-2xl bg-primary-500/15 flex items-center justify-center mx-auto mb-5">
+          <i class="fa-solid fa-shield-halved text-primary-400 text-2xl"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">SRTIP Compliant</h3>
+        <p class="text-slate-400 text-sm">Fully licensed &amp; regulated under Sharjah's premier tech free zone</p>
+      </div>
+
+      <div class="glass-card p-8 text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-16 h-16 rounded-2xl bg-gold-500/15 flex items-center justify-center mx-auto mb-5">
+          <i class="fa-solid fa-bolt text-gold-400 text-2xl"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">40% Faster Deploy</h3>
+        <p class="text-slate-400 text-sm">Pre-built industry modules slash deployment time vs. competitors</p>
+      </div>
+
+      <div class="glass-card p-8 text-center" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-16 h-16 rounded-2xl bg-green-500/15 flex items-center justify-center mx-auto mb-5">
+          <i class="fa-solid fa-dollar-sign text-green-400 text-2xl"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">Cost Leadership</h3>
+        <p class="text-slate-400 text-sm">Tier-1 quality at competitive rates via our dual-shore model</p>
+      </div>
+
+      <div class="glass-card p-8 text-center" data-aos="fade-up" data-aos-delay="300">
+        <div class="w-16 h-16 rounded-2xl bg-purple-500/15 flex items-center justify-center mx-auto mb-5">
+          <i class="fa-solid fa-headset text-purple-400 text-2xl"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg mb-3">24/7 Support</h3>
+        <p class="text-slate-400 text-sm">Dedicated support managers with enterprise SLA guarantees</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section id="contact" class="py-28 bg-dark-800">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16">
+      <!-- Left Info -->
+      <div data-aos="fade-right">
+        <div class="section-badge">
+          <i class="fa-solid fa-paper-plane"></i> Get In Touch
+        </div>
+        <h2 class="font-heading text-4xl lg:text-5xl font-bold text-white mt-4 mb-6">
+          Ready to <span class="gradient-text">Automate?</span>
+        </h2>
+        <p class="text-slate-400 text-lg leading-relaxed mb-10">
+          Start with a free 30-minute discovery call. No commitment required. We'll identify exactly where AI can deliver the fastest ROI for your business.
+        </p>
+
+        <div class="space-y-6 mb-10">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-primary-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-location-dot text-primary-400"></i>
+            </div>
+            <div>
+              <div class="text-white font-semibold">Headquarters</div>
+              <div class="text-slate-400 text-sm mt-1">SRTIP, Sharjah, UAE</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gold-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-envelope text-gold-400"></i>
+            </div>
+            <div>
+              <div class="text-white font-semibold">Email</div>
+              <a href="mailto:contact@smartvantage.ai" class="text-primary-400 text-sm mt-1 hover:underline">contact@smartvantage.ai</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-green-500/15 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-globe text-green-400"></i>
+            </div>
+            <div>
+              <div class="text-white font-semibold">Website</div>
+              <a href="https://www.smartvantage.ai" class="text-primary-400 text-sm mt-1 hover:underline">www.smartvantage.ai</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="flex gap-4">
+          <a href="https://facebook.com/share/17WrDBYeZ2" target="_blank" rel="noopener"
+             class="w-12 h-12 glass-card flex items-center justify-center hover:border-primary-500/50 transition-colors">
+            <i class="fa-brands fa-facebook text-slate-400 hover:text-white"></i>
+          </a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener"
+             class="w-12 h-12 glass-card flex items-center justify-center hover:border-primary-500/50 transition-colors">
+            <i class="fa-brands fa-linkedin text-slate-400 hover:text-white"></i>
+          </a>
+          <a href="mailto:contact@smartvantage.ai"
+             class="w-12 h-12 glass-card flex items-center justify-center hover:border-primary-500/50 transition-colors">
+            <i class="fa-solid fa-envelope text-slate-400 hover:text-white"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div data-aos="fade-left">
+        <div class="glass-card p-8">
+          <h3 class="text-white font-bold text-xl mb-6">Schedule Your Free Consultation</h3>
+          <form id="contact-form" onsubmit="submitForm(event)">
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="text-slate-400 text-sm font-medium mb-2 block">First Name</label>
+                <input type="text" class="form-input" placeholder="John" required />
+              </div>
+              <div>
+                <label class="text-slate-400 text-sm font-medium mb-2 block">Last Name</label>
+                <input type="text" class="form-input" placeholder="Smith" required />
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="text-slate-400 text-sm font-medium mb-2 block">Business Email</label>
+              <input type="email" class="form-input" placeholder="john@company.com" required />
+            </div>
+            <div class="mb-4">
+              <label class="text-slate-400 text-sm font-medium mb-2 block">Company Name</label>
+              <input type="text" class="form-input" placeholder="Your Company LLC" />
+            </div>
+            <div class="mb-4">
+              <label class="text-slate-400 text-sm font-medium mb-2 block">Industry</label>
+              <select class="form-input">
+                <option value="" style="background:#0f172a">Select your industry</option>
+                <option value="aviation" style="background:#0f172a">Aviation</option>
+                <option value="construction" style="background:#0f172a">Construction</option>
+                <option value="real-estate" style="background:#0f172a">Real Estate</option>
+                <option value="food-beverage" style="background:#0f172a">Food & Beverage</option>
+                <option value="other" style="background:#0f172a">Other</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label class="text-slate-400 text-sm font-medium mb-2 block">Service Interest</label>
+              <select class="form-input">
+                <option value="" style="background:#0f172a">What are you looking for?</option>
+                <option value="consulting" style="background:#0f172a">AI Consulting & Strategy</option>
+                <option value="development" style="background:#0f172a">Custom AI Development</option>
+                <option value="training" style="background:#0f172a">AI Training</option>
+                <option value="managed" style="background:#0f172a">Managed AI Services</option>
+                <option value="full-package" style="background:#0f172a">Complete Package</option>
+              </select>
+            </div>
+            <div class="mb-6">
+              <label class="text-slate-400 text-sm font-medium mb-2 block">Message</label>
+              <textarea class="form-input" rows="4" placeholder="Tell us about your business goals and AI challenges..."></textarea>
+            </div>
+            <button type="submit" class="btn-primary w-full justify-center text-base">
+              <i class="fa-solid fa-calendar-check"></i> Schedule Free Consultation
+            </button>
+            <p class="text-xs text-slate-500 text-center mt-3">100% Free · No Commitment · Response within 24 hours</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-dark-900 border-t border-white/5 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <!-- Brand -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg,#D4900A,#92400e);">
+            <span class="text-white font-bold text-sm" style="font-family:'Plus Jakarta Sans',sans-serif;">SV</span>
+          </div>
+          <div>
+            <div class="font-heading font-bold text-white text-lg">SmartVantage AI</div>
+            <div class="text-xs font-semibold" style="color:#D4900A">SRTIP Licensed</div>
+          </div>
+        </div>
+        <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-6">
+          UAE's leading AI consultancy delivering intelligent automation solutions for Aviation, Construction, Real Estate, and Hospitality sectors.
+        </p>
+        <div class="flex gap-3">
+          <a href="https://facebook.com/share/17WrDBYeZ2" target="_blank" rel="noopener"
+             class="w-9 h-9 glass-card flex items-center justify-center hover:border-primary-500/50 transition-colors text-sm">
+            <i class="fa-brands fa-facebook text-slate-400"></i>
+          </a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener"
+             class="w-9 h-9 glass-card flex items-center justify-center hover:border-primary-500/50 transition-colors text-sm">
+            <i class="fa-brands fa-linkedin text-slate-400"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="text-white font-semibold mb-4">Services</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li><a href="#services" class="hover:text-white transition-colors">AI Consulting</a></li>
+          <li><a href="#services" class="hover:text-white transition-colors">Custom Development</a></li>
+          <li><a href="#services" class="hover:text-white transition-colors">AI Training</a></li>
+          <li><a href="#services" class="hover:text-white transition-colors">Managed Services</a></li>
+          <li><a href="#services" class="hover:text-white transition-colors">System Integration</a></li>
+        </ul>
+      </div>
+
+      <!-- Industries -->
+      <div>
+        <h4 class="text-white font-semibold mb-4">Industries</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li><a href="#industries" class="hover:text-white transition-colors">Aviation</a></li>
+          <li><a href="#industries" class="hover:text-white transition-colors">Construction</a></li>
+          <li><a href="#industries" class="hover:text-white transition-colors">Real Estate</a></li>
+          <li><a href="#industries" class="hover:text-white transition-colors">Food &amp; Beverage</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-slate-500 text-sm">© 2026 SmartVantage AI. All rights reserved. SRTIP, Sharjah, UAE.</p>
+      <p class="text-slate-500 text-sm">All prices exclude 5% UAE VAT · License: SRTIP Approved Activities</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+  <i class="fa-solid fa-circle-check text-xl"></i>
+  <span>Message sent! We'll respond within 24 hours.</span>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+  // === AOS Init ===
+  AOS.init({ duration: 700, once: true, offset: 80 });
+
+  // === Navbar Scroll Effect ===
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+
+  // === Mobile Menu ===
+  function toggleMobile() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
+
+  // === Service Tabs ===
+  function showService(id) {
+    document.querySelectorAll('.service-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('service-' + id).classList.remove('hidden');
+    event.currentTarget.classList.add('active');
+  }
+
+  // === Currency Toggle ===
+  let isUSD = false;
+  function toggleCurrency() {
+    isUSD = !isUSD;
+    document.getElementById('currency-toggle').classList.toggle('active', isUSD);
+    document.getElementById('currency-label-aed').style.color = isUSD ? '#94a3b8' : '#fff';
+    document.getElementById('currency-label-usd').style.color = isUSD ? '#fff' : '#94a3b8';
+
+    if (isUSD) {
+      document.getElementById('pkg-starter-aed').textContent = 'USD 6,810';
+      document.getElementById('pkg-starter-usd').textContent = '≈ AED 25,000';
+      document.getElementById('pkg-midmarket-aed').textContent = 'USD 20,435';
+      document.getElementById('pkg-midmarket-usd').textContent = '≈ AED 75,000';
+      document.getElementById('pkg-enterprise-aed').textContent = 'From USD 54,495';
+      document.getElementById('pkg-enterprise-usd').textContent = 'From AED 200,000';
+    } else {
+      document.getElementById('pkg-starter-aed').textContent = 'AED 25,000';
+      document.getElementById('pkg-starter-usd').textContent = '≈ $6,810';
+      document.getElementById('pkg-midmarket-aed').textContent = 'AED 75,000';
+      document.getElementById('pkg-midmarket-usd').textContent = '≈ $20,435';
+      document.getElementById('pkg-enterprise-aed').textContent = 'From AED 200,000';
+      document.getElementById('pkg-enterprise-usd').textContent = 'From $54,495';
+    }
+  }
+
+  // === Contact Form ===
+  function submitForm(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+    e.target.reset();
+  }
+
+  // === Counter Animation ===
+  function animateCounters() {
+    document.querySelectorAll('[data-count]').forEach(el => {
+      const target = parseFloat(el.getAttribute('data-count'));
+      const prefix = el.getAttribute('data-prefix') || '';
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 2000;
+      const start = Date.now();
+
+      function update() {
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = (target * eased).toFixed(target % 1 !== 0 ? 1 : 0);
+        el.textContent = prefix + current + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      update();
+    });
+  }
+
+  // Trigger counters when stats section is visible
+  const statsObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      animateCounters();
+      statsObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+
+  const statsSection = document.querySelector('[data-count]');
+  if (statsSection) statsObserver.observe(statsSection);
+
+  // === Canvas Particle Animation ===
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = canvas.parentElement.offsetWidth;
+      canvas.height = canvas.parentElement.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const particles = [];
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 0.5,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.5 + 0.1,
+        color: Math.random() > 0.6 ? '#6366f1' : (Math.random() > 0.5 ? '#f59e0b' : '#a78bfa')
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(99,102,241,${0.12 * (1 - dist/120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw particles
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color + Math.round(p.alpha * 255).toString(16).padStart(2, '0');
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // === Hero Mini Chart ===
+  (function() {
+    const ctx = document.getElementById('heroChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [{
+          label: 'UAE AI Market ($B)',
+          data: [2.1, 3.2, 4.5, 5.8, 7.1, 8.4, 9.6],
+          borderColor: '#6366f1',
+          backgroundColor: 'rgba(99,102,241,0.1)',
+          borderWidth: 2,
+          pointBackgroundColor: '#6366f1',
+          pointRadius: 3,
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 10 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 10 }, callback: v => '$' + v + 'B' } }
+        }
+      }
+    });
+  })();
+
+  // === Market Growth Chart ===
+  (function() {
+    const ctx = document.getElementById('marketChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [
+          {
+            label: 'Market Size ($B)',
+            data: [2.1, 3.2, 4.5, 5.8, 7.1, 8.4, 9.6],
+            backgroundColor: 'rgba(99,102,241,0.6)',
+            borderColor: '#6366f1',
+            borderWidth: 1,
+            borderRadius: 6,
+          },
+          {
+            label: 'AI GDP Contribution (%)',
+            data: [3, 5, 7, 9, 11, 12.5, 14],
+            backgroundColor: 'rgba(245,158,11,0.5)',
+            borderColor: '#f59e0b',
+            borderWidth: 1,
+            borderRadius: 6,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: '#94a3b8', font: { size: 11 } }
+          }
+        },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
+          y: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#64748b', callback: v => '$' + v + 'B' }
+          },
+          y1: {
+            position: 'right',
+            grid: { display: false },
+            ticks: { color: '#64748b', callback: v => v + '%' }
+          }
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
